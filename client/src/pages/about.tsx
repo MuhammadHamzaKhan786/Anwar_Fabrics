@@ -74,13 +74,13 @@ export default function About() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <img
-                src="https://images.unsplash.com/photo-1583292650901-7d22cd27ca8f?w=300&h=300&fit=crop"
-                alt="Traditional craftsmanship"
+                src="https://images.unsplash.com/photo-1583292650901-7d22cd27ca8f?w=400&h=400&fit=crop"
+                alt="Traditional Pakistani dupatta craftsmanship"
                 className="rounded-lg shadow-md"
               />
               <img
-                src="https://images.unsplash.com/photo-1506629905315-89a9b0c1a84f?w=300&h=300&fit=crop"
-                alt="Quality fabrics"
+                src="https://images.unsplash.com/photo-1506629905315-89a9b0c1a84f?w=400&h=400&fit=crop"
+                alt="Premium dupatta fabrics and textures"
                 className="rounded-lg shadow-md mt-8"
               />
             </div>

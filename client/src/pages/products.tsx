@@ -13,7 +13,17 @@ export default function Products() {
   const [sortBy, setSortBy] = useState<string>("name");
 
   const { data: products, isLoading } = useQuery({
-    queryKey: ["/api/products", { category: selectedCategory !== "all" ? selectedCategory : undefined }],
+    queryKey: ["/api/products", selectedCategory !== "all" ? selectedCategory : undefined],
+    queryFn: async () => {
+      const url = selectedCategory !== "all" 
+        ? `/api/products?category=${selectedCategory}` 
+        : "/api/products";
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      return response.json();
+    },
   });
 
   const categories = [

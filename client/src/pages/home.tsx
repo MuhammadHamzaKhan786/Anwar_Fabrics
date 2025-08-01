@@ -8,25 +8,25 @@ export default function Home() {
     {
       name: "Crystal Tissue",
       description: "Elegant dupattas with delicate shimmer",
-      image: "https://images.unsplash.com/photo-1594736797933-d0c5fc2c99e4?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1594736797933-d0c5fc2c99e4?w=400&h=400&fit=crop",
       href: "/products?category=crystal-tissue"
     },
     {
       name: "Dull Tissue",
       description: "Traditional comfort with timeless style",
-      image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=400&fit=crop",
       href: "/products?category=dull-tissue"
     },
     {
       name: "Chamak Net",
       description: "Glamorous dupattas for special occasions",
-      image: "https://images.unsplash.com/photo-1506629905315-89a9b0c1a84f?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1506629905315-89a9b0c1a84f?w=400&h=400&fit=crop",
       href: "/products?category=chamak-net"
     },
     {
       name: "Dull Net",
       description: "Sophisticated everyday elegance",
-      image: "https://images.unsplash.com/photo-1594736797526-d0c5fc2c99f4?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1594736797526-d0c5fc2c99f4?w=400&h=400&fit=crop",
       href: "/products?category=dull-net"
     }
   ];
