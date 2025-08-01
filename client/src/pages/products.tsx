@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import type { Product } from "@shared/schema";
 
 export default function Products() {
@@ -214,18 +214,8 @@ export default function Products() {
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                           {product.description}
                         </p>
-                        <div className="flex items-center justify-between">
-                          <div className="text-2xl font-bold text-pink-600">
-                            ${product.price}
-                          </div>
-                          <Button 
-                            size="sm" 
-                            className="bg-pink-600 hover:bg-pink-700 text-white"
-                            disabled={product.inStock === 0}
-                          >
-                            <ShoppingCart className="h-4 w-4 mr-1" />
-                            Add to Cart
-                          </Button>
+                        <div className="text-2xl font-bold text-pink-600">
+                          ${product.price}
                         </div>
                         {product.inStock > 0 && product.inStock <= 5 && (
                           <p className="text-xs text-orange-600 mt-2">
