@@ -14,12 +14,24 @@ export default function SidebarPanels() {
     queryKey: ["/api/analytics"],
   });
 
+  // Provide default values to prevent TypeScript errors
+  const defaultCategories = {
+    analytics: 0,
+    reports: 0,
+    optimization: 0,
+    presentation: 0,
+    other: 0
+  };
+
+  // Type the categories data properly
+  const typedCategories = categories as typeof defaultCategories || defaultCategories;
+
   const categoryColors = [
-    { name: "analytics", color: "bg-blue-500", count: categories?.analytics || 0 },
-    { name: "reports", color: "bg-green-500", count: categories?.reports || 0 },
-    { name: "optimization", color: "bg-purple-500", count: categories?.optimization || 0 },
-    { name: "presentation", color: "bg-yellow-500", count: categories?.presentation || 0 },
-    { name: "other", color: "bg-gray-400", count: categories?.other || 0 },
+    { name: "analytics", color: "bg-blue-500", count: typedCategories.analytics },
+    { name: "reports", color: "bg-green-500", count: typedCategories.reports },
+    { name: "optimization", color: "bg-purple-500", count: typedCategories.optimization },
+    { name: "presentation", color: "bg-yellow-500", count: typedCategories.presentation },
+    { name: "other", color: "bg-gray-400", count: typedCategories.other },
   ];
 
   return (

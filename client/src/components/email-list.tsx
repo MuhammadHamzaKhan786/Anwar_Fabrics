@@ -121,7 +121,7 @@ export default function EmailList({ showFullView = false }: EmailListProps) {
         </div>
 
         <div className="divide-y divide-gray-200">
-          {emails?.map((email: Email) => (
+          {emails && Array.isArray(emails) ? emails.map((email: Email) => (
             <div
               key={email.id}
               className="px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer"
@@ -136,7 +136,7 @@ export default function EmailList({ showFullView = false }: EmailListProps) {
                     <p className="text-sm font-medium text-gray-900">{email.sender}</p>
                     <p className="text-sm text-gray-600 truncate max-w-md">{email.subject}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {email.metadata?.timestamp || new Date(email.createdAt).toLocaleString()}
+                      {new Date(email.createdAt).toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -153,7 +153,11 @@ export default function EmailList({ showFullView = false }: EmailListProps) {
                 </div>
               </div>
             </div>
-          ))}
+          )) : (
+            <div className="px-6 py-8 text-center text-gray-500">
+              No emails available
+            </div>
+          )}
         </div>
 
         {!showFullView && (

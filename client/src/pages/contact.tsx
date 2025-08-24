@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,16 +7,21 @@ import { Label } from "@/components/ui/label";
 import { MapPin, Phone, Mail, Clock, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertContactSchema } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+
+// Define our own schema since we removed the shared schema
+const insertContactSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  phone: z.string().optional(),
+  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
+});
 
 type ContactFormData = z.infer<typeof insertContactSchema>;
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const {
@@ -29,51 +33,38 @@ export default function Contact() {
     resolver: zodResolver(insertContactSchema)
   });
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: ContactFormData) => {
-      const response = await apiRequest("POST", "/api/contacts", data);
-      return response.json();
-    },
-    onSuccess: () => {
+  const onSubmit = (data: ContactFormData) => {
+    setIsSubmitting(true);
+    
+    // Simulate form submission without backend
+    setTimeout(() => {
+      console.log("Form submitted:", data);
       toast({
         title: "Message Sent!",
         description: "Thank you for your message. We'll get back to you within 24 hours.",
       });
       reset();
       setIsSubmitting(false);
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-      setIsSubmitting(false);
-    },
-  });
-
-  const onSubmit = (data: ContactFormData) => {
-    setIsSubmitting(true);
-    contactMutation.mutate(data);
+    }, 1000);
   };
 
   const contactInfo = [
     {
       icon: MapPin,
       title: "Visit Our Store",
-      details: "Karachi, Pakistan",
+      details: "Bolton Market Bombay Bazar Karachi, Pakistan",
       description: "Experience our collection in person at our flagship store"
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: "+92 21 1234 5678",
-      description: "Monday to Saturday, 9 AM - 8 PM PKT"
+      details: "+92 332 2424503",
+      description: "Monday to Saturday, 11 AM - 8 PM PKT"
     },
     {
       icon: Mail,
       title: "Email Us",
-      details: "info@anwarduppatahouse.com",
+      details: "anwarhamza712@gmail.com.com",
       description: "We'll respond within 24 hours"
     },
     {
@@ -91,7 +82,7 @@ export default function Contact() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have questions about our dupattas or need assistance with your order? 
+            Have questions about our material or need assistance with your order? 
             We're here to help and would love to hear from you.
           </p>
         </div>

@@ -17,7 +17,6 @@ interface EmailDetailModalProps {
 export default function EmailDetailModal({ email, onClose }: EmailDetailModalProps) {
   const [priority, setPriority] = useState(email.priority);
   const [category, setCategory] = useState(email.category);
-  const [isProcessed, setIsProcessed] = useState(email.isProcessed);
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -47,7 +46,6 @@ export default function EmailDetailModal({ email, onClose }: EmailDetailModalPro
     updateEmailMutation.mutate({
       priority,
       category,
-      isProcessed,
     });
   };
 
@@ -115,7 +113,7 @@ export default function EmailDetailModal({ email, onClose }: EmailDetailModalPro
                   <Badge className={getCategoryColor(email.category)}>
                     {email.category.charAt(0).toUpperCase() + email.category.slice(1)}
                   </Badge>
-                  {email.isProcessed && (
+                  {email.status === "processed" && (
                     <Badge className="bg-success-100 text-success-800">Processed</Badge>
                   )}
                 </div>
@@ -166,7 +164,7 @@ export default function EmailDetailModal({ email, onClose }: EmailDetailModalPro
 
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-2">Status</label>
-                  <Select value={isProcessed ? "processed" : "pending"} onValueChange={(value) => setIsProcessed(value === "processed")}>
+                  <Select value={email.status} onValueChange={(value) => setPriority(value)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

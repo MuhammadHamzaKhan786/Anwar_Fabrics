@@ -1,50 +1,36 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
-async function throwIfResNotOk(res: Response) {
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
-  }
-}
+// Mock data function to simulate API responses
+export const mockData = {
+  products: [
+    { id: 1, name: "Premium Dupatta", price: 2500, category: "Formal" },
+    { id: 2, name: "Casual Dupatta", price: 1800, category: "Casual" },
+    { id: 3, name: "Wedding Dupatta", price: 3500, category: "Bridal" },
+    { id: 4, name: "Embroidered Dupatta", price: 2800, category: "Formal" }
+  ],
+  users: [
+    { id: 1, name: "User 1", email: "user1@example.com" }
+  ]
+};
 
+// Simulated API request function
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
+  console.log(`Mock API request: ${method} ${url}`, data);
+  
+  // Simulate successful response
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
   });
-
-  await throwIfResNotOk(res);
-  return res;
 }
-
-type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
-  on401: UnauthorizedBehavior;
-}) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
-    }
-
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,

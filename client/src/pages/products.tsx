@@ -7,7 +7,19 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Filter } from "lucide-react";
-import type { Product } from "@shared/schema";
+import { mockData } from "@/lib/queryClient";
+
+// Define Product type locally since we removed shared schema
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  description?: string;
+  imageUrl?: string;
+  createdAt: string;
+  inStock?: number;
+}
 
 export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -25,17 +37,35 @@ export default function Products() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
 
+  // Use mock data instead of API calls
   const { data: products, isLoading } = useQuery({
-    queryKey: ["/api/products", selectedCategory !== "all" ? selectedCategory : undefined],
+    queryKey: ["products", selectedCategory],
     queryFn: async () => {
-      const url = selectedCategory !== "all" 
-        ? `/api/products?category=${selectedCategory}` 
-        : "/api/products";
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Create extended mock product data with more fields
+      const mockProducts: Product[] = [
+        { id: 1, name: "Crystal Tissue Dupatta", price: 2500, category: "crystal-tissue", description: "Elegant crystal tissue dupatta with intricate embroidery", imageUrl: "https://via.placeholder.com/400x400?text=Crystal+Tissue", createdAt: "2023-05-15", inStock: 15 },
+        { id: 2, name: "Dull Tissue Dupatta", price: 1800, category: "dull-tissue", description: "Sophisticated dull tissue dupatta for everyday wear", imageUrl: "https://via.placeholder.com/400x400?text=Dull+Tissue", createdAt: "2023-06-20", inStock: 8 },
+        { id: 3, name: "Chamak Net Bridal Dupatta", price: 3500, category: "chamak-net", description: "Luxurious chamak net dupatta perfect for bridal wear", imageUrl: "https://via.placeholder.com/400x400?text=Chamak+Net", createdAt: "2023-07-10", inStock: 5 },
+        { id: 4, name: "Dull Net Embroidered Dupatta", price: 2200, category: "dull-net", description: "Beautifully embroidered dull net dupatta", imageUrl: "https://via.placeholder.com/400x400?text=Dull+Net", createdAt: "2023-08-05", inStock: 12 },
+        { id: 5, name: "Premium Crystal Tissue", price: 2800, category: "crystal-tissue", description: "Premium quality crystal tissue with gold work", imageUrl: "https://via.placeholder.com/400x400?text=Premium+Crystal", createdAt: "2023-09-12", inStock: 7 },
+        { id: 6, name: "Designer Dull Tissue", price: 2100, category: "dull-tissue", description: "Designer dull tissue with modern patterns", imageUrl: "https://via.placeholder.com/400x400?text=Designer+Dull", createdAt: "2023-10-18", inStock: 10 },
+        { id: 7, name: "Luxury Chamak Net", price: 3200, category: "chamak-net", description: "Luxury chamak net dupatta with stunning embellishments", imageUrl: "https://via.placeholder.com/400x400?text=Luxury+Chamak", createdAt: "2023-11-05", inStock: 3 },
+        { id: 8, name: "Embroidered Crystal Tissue", price: 2700, category: "crystal-tissue", description: "Beautifully embroidered crystal tissue with border work", imageUrl: "https://via.placeholder.com/400x400?text=Embroidered+Crystal", createdAt: "2023-12-10", inStock: 9 },
+        { id: 9, name: "Casual Dull Net", price: 1900, category: "dull-net", description: "Casual dull net dupatta for everyday elegance", imageUrl: "https://via.placeholder.com/400x400?text=Casual+Dull+Net", createdAt: "2024-01-15", inStock: 14 },
+        { id: 10, name: "Wedding Special Chamak", price: 4000, category: "chamak-net", description: "Special wedding collection chamak net with heavy work", imageUrl: "https://via.placeholder.com/400x400?text=Wedding+Special", createdAt: "2024-02-20", inStock: 6 },
+        { id: 11, name: "Premium Dull Tissue", price: 2300, category: "dull-tissue", description: "Premium quality dull tissue with subtle patterns", imageUrl: "https://via.placeholder.com/400x400?text=Premium+Dull", createdAt: "2024-03-25", inStock: 11 },
+        { id: 12, name: "Designer Dull Net", price: 2400, category: "dull-net", description: "Designer dull net with contemporary patterns", imageUrl: "https://via.placeholder.com/400x400?text=Designer+Net", createdAt: "2024-04-30", inStock: 8 }
+      ];
+      
+      // Filter by category if needed
+      if (selectedCategory !== "all") {
+        return mockProducts.filter(product => product.category === selectedCategory);
       }
-      return response.json();
+      
+      return mockProducts;
     },
   });
 
@@ -80,9 +110,9 @@ export default function Products() {
     return [...products].sort((a, b) => {
       switch (sortBy) {
         case "price-low":
-          return parseFloat(a.price) - parseFloat(b.price);
+          return a.price - b.price;
         case "price-high":
-          return parseFloat(b.price) - parseFloat(a.price);
+          return b.price - a.price;
         case "newest":
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         default:
@@ -132,7 +162,7 @@ export default function Products() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Our Premium Dupatta Collection</h1>
           <p className="text-lg text-gray-600">
-            Discover authentic Pakistani dupattas crafted with the finest materials and traditional techniques
+            Discover authentic imported material crafted with the finest materials and traditional techniques
           </p>
         </div>
 
@@ -211,7 +241,7 @@ export default function Products() {
                           <Badge className={getCategoryColor(product.category)}>
                             {getCategoryLabel(product.category)}
                           </Badge>
-                          {product.inStock > 0 ? (
+                          {product.inStock && product.inStock > 0 ? (
                             <Badge variant="outline" className="text-green-600 border-green-600">
                               In Stock
                             </Badge>
@@ -228,9 +258,9 @@ export default function Products() {
                           {product.description}
                         </p>
                         <div className="text-2xl font-bold text-pink-600">
-                          ${product.price}
+                          RS: {product.price.toFixed(2)}
                         </div>
-                        {product.inStock > 0 && product.inStock <= 5 && (
+                        {product.inStock !== undefined && product.inStock > 0 && product.inStock <= 5 && (
                           <p className="text-xs text-orange-600 mt-2">
                             Only {product.inStock} left in stock!
                           </p>

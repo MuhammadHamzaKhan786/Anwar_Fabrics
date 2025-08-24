@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-bold text-pink-400 mb-4">Anwar Duppata House</h3>
             <p className="text-gray-300 mb-4">
-              Authentic Pakistani dupatta collections crafted with tradition and elegance since 1995.
+              Authentic Imported collections crafted with tradition and elegance since 1995.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-pink-400 transition-colors">
@@ -120,15 +120,15 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center text-gray-300">
                 <MapPin className="h-4 w-4 mr-3 text-pink-400" />
-                <span>Karachi, Pakistan</span>
+                <span>Bolton Market Bombay Bazar Karachi, Pakistan</span>
               </div>
               <div className="flex items-center text-gray-300">
                 <Phone className="h-4 w-4 mr-3 text-pink-400" />
-                <span>+92 21 1234 5678</span>
+                <span>+92 332 2424503</span>
               </div>
               <div className="flex items-center text-gray-300">
                 <Mail className="h-4 w-4 mr-3 text-pink-400" />
-                <span>info@anwarduppatahouse.com</span>
+                <span>anwarhamza712@gmail.com</span>
               </div>
             </div>
           </div>

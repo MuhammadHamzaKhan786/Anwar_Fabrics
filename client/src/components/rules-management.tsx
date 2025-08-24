@@ -106,7 +106,7 @@ export default function RulesManagement() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rules?.map((rule: Rule) => (
+            {rules && Array.isArray(rules) ? rules.map((rule: Rule) => (
               <TableRow key={rule.id} className="hover:bg-gray-50">
                 <TableCell>
                   <div className="text-sm font-medium text-gray-900">{rule.name}</div>
@@ -123,12 +123,12 @@ export default function RulesManagement() {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Badge className={getStatusColor(rule.isActive)}>
+                  <Badge className={getStatusColor(Boolean(rule.isActive))}>
                     {rule.isActive ? "Active" : "Paused"}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-sm text-gray-900">
-                  {rule.successRate}%
+                  N/A
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end space-x-2">
@@ -152,7 +152,13 @@ export default function RulesManagement() {
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+            )) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                  No rules available
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>

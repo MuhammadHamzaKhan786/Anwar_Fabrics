@@ -20,10 +20,21 @@ export default function StatsOverview() {
     );
   }
 
+  // Provide default values to prevent TypeScript errors
+  const defaultStats = {
+    totalEmails: 0,
+    highPriority: 0,
+    processed: 0,
+    avgResponseTime: "0h"
+  };
+
+  // Type the stats data properly
+  const typedStats = stats as typeof defaultStats || defaultStats;
+
   const statCards = [
     {
       title: "Total Emails",
-      value: stats?.totalEmails || 0,
+      value: typedStats.totalEmails,
       icon: Mail,
       trend: "+12%",
       trendUp: true,
@@ -32,7 +43,7 @@ export default function StatsOverview() {
     },
     {
       title: "High Priority",
-      value: stats?.highPriority || 0,
+      value: typedStats.highPriority,
       icon: AlertTriangle,
       trend: "+8%",
       trendUp: true,
@@ -41,7 +52,7 @@ export default function StatsOverview() {
     },
     {
       title: "Processed",
-      value: stats?.processed || 0,
+      value: typedStats.processed,
       icon: CheckCircle,
       trend: "+15%",
       trendUp: true,
@@ -50,7 +61,7 @@ export default function StatsOverview() {
     },
     {
       title: "Avg Response Time",
-      value: stats?.avgResponseTime || "0h",
+      value: typedStats.avgResponseTime,
       icon: Clock,
       trend: "-23%",
       trendUp: false,
